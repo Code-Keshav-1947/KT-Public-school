@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect width="400" height="300" fill="#1a3a6b"/>
+  <rect x="20" y="20" width="360" height="260" fill="none" stroke="#c8960c" stroke-width="2" rx="8"/>
+  <text x="200" y="140" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="22" font-weight="bold">Annual Day Celebration</text>
+  <text x="200" y="175" text-anchor="middle" fill="#c8960c" font-family="Arial, sans-serif" font-size="14">KT Public School</text>
+</svg>

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Home — KT Public School{% endblock %}
+
+{% block content %}
+<section class="hero-section text-white text-center">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">Welcome to KT Public School</h1>
+                <p class="lead mb-4">Empowering students to excel academically, grow personally, and serve their community with integrity and compassion.</p>
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+                    <a href="{{ url_for('main.admissions') }}" class="btn btn-light btn-lg px-4">Apply for Admission</a>
+                    <a href="{{ url_for('main.about') }}" class="btn btn-outline-light btn-lg px-4">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Why Choose KT Public School?</h2>
+            <p class="text-muted">A holistic learning environment for every child</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 feature-card border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3"><i class="bi bi-book"></i></div>
+                        <h5 class="card-title">Quality Education</h5>
+                        <p class="card-text text-muted">CBSE-aligned curriculum delivered by experienced and dedicated faculty members.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 feature-card border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3"><i class="bi bi-people"></i></div>
+                        <h5 class="card-title">Holistic Development</h5>
+                        <p class="card-text text-muted">Sports, arts, and co-curricular activities that build confidence and character.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 feature-card border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3"><i class="bi bi-shield-check"></i></div>
+                        <h5 class="card-title">Safe Environment</h5>
+                        <p class="card-text text-muted">A secure campus with modern facilities and a caring, supportive atmosphere.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <h2 class="section-title">About Our School</h2>
+                <p>KT Public School has been a pillar of educational excellence in our community for over three decades. We believe every child has unique potential, and our mission is to unlock it through personalized attention and innovative teaching methods.</p>
+                <p class="mb-4">From nursery to senior secondary, we provide a seamless learning journey that prepares students for higher education and life beyond the classroom.</p>
+                <a href="{{ url_for('main.about') }}" class="btn btn-primary">Read Our Story</a>
+            </div>
+            <div class="col-lg-6">
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-number">30+</span>
+                        <span class="stat-label">Years of Excellence</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">2000+</span>
+                        <span class="stat-label">Students</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">Faculty Members</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Board Results</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Latest Notices</h2>
+            <a href="{{ url_for('notices.list_notices') }}" class="btn btn-outline-primary btn-sm">View All</a>
+        </div>
+        {% if notices %}
+            <div class="row g-3">
+                {% for notice in notices %}
+                    <div class="col-md-4">
+                        <div class="card h-100 notice-card border-0 shadow-sm">
+                            <div class="card-body">
+                                <small class="text-muted">{{ notice.published_at.strftime('%d %b %Y') }}</small>
+                                <h5 class="card-title mt-2">{{ notice.title }}</h5>
+                                <p class="card-text text-muted">{{ notice.body[:120] }}{% if notice.body|length > 120 %}...{% endif %}</p>
+                                <a href="{{ url_for('notices.notice_detail', notice_id=notice.id) }}" class="stretched-link text-decoration-none">Read more &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">No notices at the moment. Check back soon!</div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="cta-section py-5 text-white text-center">
+    <div class="container">
+        <h2 class="mb-3">Ready to Join KT Public School?</h2>
+        <p class="lead mb-4">Admissions are now open for the upcoming academic session.</p>
+        <a href="{{ url_for('main.admissions') }}" class="btn btn-light btn-lg">Start Your Application</a>
+    </div>
+</section>
+{% endblock %}

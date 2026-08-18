@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ notice.title }} — KT Public School{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{{ url_for('notices.list_notices') }}" class="text-white-50">Notices</a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page">{{ notice.title }}</li>
+            </ol>
+        </nav>
+        <h1>{{ notice.title }}</h1>
+        <p class="lead mb-0">Published on {{ notice.published_at.strftime('%d %B %Y') }}</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <article class="notice-body">
+                    {{ notice.body | replace('\n', '<br>') | safe }}
+                </article>
+                <hr class="my-4">
+                <a href="{{ url_for('notices.list_notices') }}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Notices
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
