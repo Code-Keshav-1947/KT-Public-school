@@ -17,33 +17,35 @@
                 <h2 class="section-title">Our Mission</h2>
                 <p>To provide a nurturing and inclusive educational environment where every student is encouraged to discover their talents, develop critical thinking skills, and become responsible citizens of tomorrow.</p>
 
+
                 <h2 class="section-title mt-5">Our Vision</h2>
                 <p>To be a leading institution of learning that inspires excellence, fosters innovation, and builds character — preparing students to thrive in an ever-changing world.</p>
 
                 <h2 class="section-title mt-5">Core Values</h2>
                 <div class="row g-3">
                     <div class="col-sm-6">
-                        <div class="value-item">
+                        <div class="value-item d-flex align-items-center">
                             <i class="bi bi-star-fill text-warning me-2"></i>
-                            <strong>Excellence</strong> — Striving for the highest standards in all we do
+                            <span><strong>Excellence</strong> — Striving for the highest standards in all we do</span>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="value-item">
+                        <div class="value-item d-flex align-items-center">
                             <i class="bi bi-heart-fill text-danger me-2"></i>
-                            <strong>Integrity</strong> — Honesty, respect, and ethical conduct
+                            <span><strong>Integrity</strong> — Honesty, respect, and ethical conduct</span>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="value-item">
+                        <div class="value-item d-flex align-items-center">
+
                             <i class="bi bi-lightbulb-fill text-primary me-2"></i>
-                            <strong>Curiosity</strong> — Encouraging inquiry and lifelong learning
+                            <span><strong>Curiosity</strong> — Encouraging inquiry and lifelong learning</span>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="value-item">
+                        <div class="value-item d-flex align-items-center">
                             <i class="bi bi-globe2 text-success me-2"></i>
-                            <strong>Inclusion</strong> — Embracing diversity and equal opportunity
+                            <span><strong>Inclusion</strong> — Embracing diversity and equal opportunity</span>
                         </div>
                     </div>
                 </div>
@@ -51,12 +53,13 @@
             <div class="col-lg-4">
                 <div class="card border-0 shadow-sm principal-card">
                     <div class="card-body p-4">
-                        <div class="principal-avatar mb-3">
-                            <i class="bi bi-person-circle"></i>
+                        <div class="principal-avatar mb-3 text-center">
+                            <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
                         </div>
-                        <h5 class="card-title">Message from the Principal</h5>
+                        <h5 class="card-title text-center">Message from the Principal</h5>
+
                         <p class="card-text text-muted">"At KT Public School, we believe education is not just about academic achievement — it is about shaping well-rounded individuals who are confident, compassionate, and ready to make a difference. I welcome you to be part of our vibrant school community."</p>
-                        <p class="mb-0 fw-semibold">— Dr. Rajesh Kumar<br><small class="text-muted">Principal</small></p>
+                        <p class="mb-0 fw-semibold text-end">— Mr. Sonu Singh<br><small class="text-muted">Principal</small></p>
                     </div>
                 </div>
             </div>
@@ -64,35 +67,45 @@
     </div>
 </section>
 
-<section class="py-5 bg-light">
+<section class="py-5 bg-transparent">
     <div class="container">
         <h2 class="section-title text-center mb-5">Our Facilities</h2>
         <div class="row g-4">
+            <!-- Computer Labs -->
             <div class="col-md-3 col-6">
                 <div class="facility-item text-center">
-                    <i class="bi bi-pc-display"></i>
-                    <p>Computer Labs</p>
+                    <i class="bi bi-pc-display text-primary mb-2" style="font-size: 2.5rem; display: block;"></i>
+                    <p class="mb-0">Computer Labs</p>
+                </div>
+
+            </div>
+            <!-- Science Lab -->
+            <div class="col-md-3 col-6">
+                <div class="facility-item text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="3.7rem" height="2.5rem" fill="currentColor" class="text-info mb-2" viewBox="0 0 16 16" style="display: block; margin: 0 auto;">
+                        <path d="M2.994 12.158c-1.577 2.456-.255 4.842 2.511 4.842h9.49c2.766 0 4.088-2.386 2.511-4.842L13.14 5.31V2h.86a.5.5 0 0 0 .5-.5V.5a.5.5 0 0 0-.5-.5H3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h.86v3.31L4.654 9.022zM4.873 10h6.254l-1.847-3.772A.5.5 0 0 0 8.813 6H7.187a.5.5 0 0 0-.467.228L4.873 10z"/>
+                    </svg>
+                    <p class="mb-0">Science Lab</p>
                 </div>
             </div>
+            <!-- Library -->
             <div class="col-md-3 col-6">
                 <div class="facility-item text-center">
-                    <i class="bi bi-flask"></i>
-                    <p>Science Labs</p>
+                    <i class="bi bi-book text-success mb-2" style="font-size: 2.5rem; display: block;"></i>
+                    <p class="mb-0">Library</p>
                 </div>
             </div>
+            <!-- Sports Ground -->
             <div class="col-md-3 col-6">
+
                 <div class="facility-item text-center">
-                    <i class="bi bi-book"></i>
-                    <p>Library</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="facility-item text-center">
-                    <i class="bi bi-trophy"></i>
-                    <p>Sports Ground</p>
+                    <i class="bi bi-trophy text-warning mb-2" style="font-size: 2.5rem; display: block;"></i>
+                    <p class="mb-0">Sports Ground</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 {% endblock %}
+
+
