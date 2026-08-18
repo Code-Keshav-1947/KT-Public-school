@@ -1,12 +1,12 @@
 import os
+from app import create_app, db
 
-from app import create_app, db 
-
-with create_app.app_context():
-    db.create_all()
-
-
+# 1. Create the app instance first
 app = create_app(os.environ.get("FLASK_ENV", "development"))
+
+# 2. Use the created app instance to build the database tables
+with app.app_context():
+    db.create_all()
 
 if __name__ == "__main__":
     app.run(debug=True)
