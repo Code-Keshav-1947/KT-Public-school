@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # KT Public School — Website
 
 Public-facing school website built with Flask, Bootstrap 5, and PostgreSQL (SQLite for local dev).
@@ -54,6 +53,3 @@ For quick local setup, `python seed.py` creates tables and loads sample data aut
 ## Project Structure
 
 See [PROJECT.md](PROJECT.md) for full architecture and planning details.
-=======
-# KT-Public-school
->>>>>>> e445d2fc5f4a37f08a2316f9253399958b5606d8
