@@ -9,4 +9,7 @@ with app.app_context():
     db.create_all()
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=8000)
+    # यह लाइन रेंडर के पोर्ट को अपने आप पहचान लेगी
+    port = int(os.environ.get("PORT", 8000))
+    # host को '0.0.0.0' रखने से यह इंटरनेट पर लाइव होने के लिए तैयार हो जाता है
+    app.run(debug=False, host='0.0.0.0', port=port)
