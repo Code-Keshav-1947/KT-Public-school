@@ -1,0 +1,108 @@
+﻿{% extends "admin/base.html" %}
+{% block title %}Inquiries{% endblock %}
+{% block page_title %}Inquiries{% endblock %}
+{% block breadcrumb %} &rsaquo; Inquiries{% endblock %}
+{% block content %}
+<div class="page-hero">
+    <div>
+        <h1 class="page-hero-title">Inquiries</h1>
+        <p class="page-hero-sub">{{ inquiries|length }} submission{{ 's' if inquiries|length != 1 else '' }} received</p>
+    </div>
+</div>
+
+<!-- Filter bar -->
+<div class="d-flex gap-2 mb-3 flex-wrap">
+    <button class="btn btn-accent btn-sm filter-btn active" data-filter="all">All ({{ inquiries|length }})</button>
+    <button class="btn btn-ghost btn-sm filter-btn" data-filter="admission">Admissions ({{ inquiries|selectattr('inquiry_type','eq','admission')|list|length }})</button>
+    <button class="btn btn-ghost btn-sm filter-btn" data-filter="contact">Contact ({{ inquiries|selectattr('inquiry_type','eq','contact')|list|length }})</button>
+</div>
+
+<div class="panel">
+{% if inquiries %}
+<div class="table-responsive">
+<table class="admin-table" id="inquiriesTable">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Contact</th>
+            <th>Type</th>
+            <th>Message</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for inq in inquiries %}
+    <tr data-type="{{ inq.inquiry_type }}">
+        <td class="text-muted" style="font-size:.8rem;">{{ inq.id }}</td>
+        <td>
+            <div class="d-flex align-items-center gap-2">
+                <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,{% if inq.inquiry_type == 'admission' %}#3B82F6,#6366F1{% else %}#10B981,#059669{% endif %});display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700;flex-shrink:0;">{{ inq.name[0].upper() }}</div>
+                <span class="fw-600">{{ inq.name }}</span>
+            </div>
+        </td>
+        <td>
+            <div style="font-size:.83rem;">{{ inq.email }}</div>
+            {% if inq.phone %}<div class="text-muted" style="font-size:.78rem;">{{ inq.phone }}</div>{% endif %}
+        </td>
+        <td>
+            {% if inq.inquiry_type == 'admission' %}
+            <span class="badge-pill badge-info"><i class="bi bi-mortarboard"></i> Admission</span>
+            {% else %}
+            <span class="badge-pill badge-success"><i class="bi bi-chat-dots"></i> Contact</span>
+            {% endif %}
+        </td>
+        <td style="max-width:280px;">
+            <div style="font-size:.82rem;color:#475569;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">{{ inq.message[:150] }}{% if inq.message|length > 150 %}...{% endif %}</div>
+            {% if inq.message|length > 80 %}
+            <a href="#" class="text-primary" style="font-size:.75rem;" onclick="showMsg(this, `{{ inq.message | replace('`', "'") }}`); return false;">Read full</a>
+            {% endif %}
+        </td>
+        <td class="text-muted" style="font-size:.8rem;white-space:nowrap;">{{ inq.created_at.strftime('%d %b %Y') }}<br><span style="font-size:.72rem;">{{ inq.created_at.strftime('%H:%M') }}</span></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty-state">
+    <i class="bi bi-inbox"></i>
+    <h5>No Inquiries Yet</h5>
+    <p>When visitors fill out contact or admission forms on the public site, their submissions will appear here.</p>
+</div>
+{% endif %}
+</div>
+
+<!-- Message Modal -->
+<div class="modal fade" id="msgModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border:none;border-radius:16px;">
+            <div class="modal-header border-0 pb-0">
+                <h6 class="modal-title fw-bold">Full Message</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body pt-2" id="msgModalBody" style="font-size:.875rem;line-height:1.7;white-space:pre-wrap;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.classList.add('btn-ghost'); b.classList.remove('btn-accent'); });
+        this.classList.add('active', 'btn-accent'); this.classList.remove('btn-ghost');
+        const filter = this.dataset.filter;
+        document.querySelectorAll('#inquiriesTable tbody tr').forEach(row => {
+            row.style.display = (filter === 'all' || row.dataset.type === filter) ? '' : 'none';
+        });
+    });
+});
+
+function showMsg(link, msg) {
+    document.getElementById('msgModalBody').textContent = msg;
+    new bootstrap.Modal(document.getElementById('msgModal')).show();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,97 @@
+﻿{% extends "admin/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %} &rsaquo; <a href="{{ url_for('admin.notices_list') }}">Notices</a> &rsaquo; {{ title }}{% endblock %}
+{% block content %}
+<div class="page-hero">
+    <div>
+        <h1 class="page-hero-title">{{ title }}</h1>
+        <p class="page-hero-sub">Fill in the details below and save your notice.</p>
+    </div>
+    <a href="{{ url_for('admin.notices_list') }}" class="btn btn-ghost btn-sm d-flex align-items-center gap-2">
+        <i class="bi bi-arrow-left"></i> Back to Notices
+    </a>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title"><i class="bi bi-megaphone"></i> Notice Details</span>
+            </div>
+            <div class="panel-body">
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="mb-4">
+                        {{ form.title.label(class="form-label") }}
+                        {{ form.title(class="form-control" + (" is-invalid" if form.title.errors else ""), placeholder="Enter a clear, concise notice title") }}
+                        {% for e in form.title.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="mb-4">
+                        {{ form.body.label(class="form-label") }}
+                        {{ form.body(class="form-control" + (" is-invalid" if form.body.errors else ""), rows=12, placeholder="Write the full notice content here...") }}
+                        {% for e in form.body.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                        <div class="form-text mt-1">Use blank lines to separate paragraphs. Line breaks will be preserved when displayed.</div>
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-7">
+                            {{ form.published_at.label(class="form-label") }}
+                            {{ form.published_at(class="form-control" + (" is-invalid" if form.published_at.errors else "")) }}
+                            {% for e in form.published_at.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                            <div class="form-text">Leave blank to use the current date and time.</div>
+                        </div>
+                        <div class="col-md-5 d-flex align-items-end pb-1">
+                            <div class="form-check">
+                                {{ form.is_published(class="form-check-input") }}
+                                <label class="form-check-label fw-600" for="{{ form.is_published.id }}">
+                                    {{ form.is_published.label.text }}
+                                </label>
+                                <div class="form-text">Uncheck to save as draft (hidden from public).</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        {{ form.submit(class="btn btn-accent px-4") }}
+                        <a href="{{ url_for('admin.notices_list') }}" class="btn btn-ghost px-4">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title"><i class="bi bi-info-circle"></i> Tips</span>
+            </div>
+            <div class="panel-body" style="font-size:.84rem;color:#64748B;line-height:1.7;">
+                <p class="mb-2"><strong style="color:#1E293B;">Title:</strong> Keep it short and descriptive (under 10 words works best).</p>
+                <p class="mb-2"><strong style="color:#1E293B;">Body:</strong> Use line breaks to structure the content. Include dates, times, and action items clearly.</p>
+                <p class="mb-2"><strong style="color:#1E293B;">Published At:</strong> You can backdate or schedule a notice by adjusting this date.</p>
+                <p class="mb-0"><strong style="color:#1E293B;">Draft mode:</strong> Uncheck "Published" to hide the notice from the public site until you are ready.</p>
+            </div>
+        </div>
+        {% if notice %}
+        <div class="panel mt-3">
+            <div class="panel-header">
+                <span class="panel-title"><i class="bi bi-clock-history"></i> Info</span>
+            </div>
+            <div class="panel-body" style="font-size:.84rem;color:#64748B;">
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Created</span>
+                    <span class="text-dark fw-500">{{ notice.created_at.strftime('%d %b %Y, %H:%M') }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span>Notice ID</span>
+                    <span class="badge-pill badge-muted">#{{ notice.id }}</span>
+                </div>
+                <hr class="my-3">
+                <a href="{{ url_for('notices.notice_detail', notice_id=notice.id) }}" target="_blank" class="btn btn-ghost btn-sm w-100 d-flex align-items-center gap-2">
+                    <i class="bi bi-eye"></i> Preview on Public Site
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

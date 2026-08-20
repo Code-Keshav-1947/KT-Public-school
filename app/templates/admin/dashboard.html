@@ -1,0 +1,124 @@
+﻿{% extends "admin/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-hero">
+    <div>
+        <h1 class="page-hero-title">Welcome back, Admin</h1>
+        <p class="page-hero-sub">Here is what is happening at KT Public School today.</p>
+    </div>
+    <a href="{{ url_for('admin.notice_create') }}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+        <i class="bi bi-plus-lg"></i> New Notice
+    </a>
+</div>
+
+<!-- Stats Row -->
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card purple">
+            <div class="stat-icon purple"><i class="bi bi-megaphone-fill"></i></div>
+            <div class="stat-value">{{ stats.notices }}</div>
+            <div class="stat-label">Total Notices</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card green">
+            <div class="stat-icon green"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="stat-value">{{ stats.published_notices }}</div>
+            <div class="stat-label">Published Notices</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card blue">
+            <div class="stat-icon blue"><i class="bi bi-images"></i></div>
+            <div class="stat-value">{{ stats.gallery }}</div>
+            <div class="stat-label">Gallery Images</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="stat-card orange">
+            <div class="stat-icon orange"><i class="bi bi-envelope-fill"></i></div>
+            <div class="stat-value">{{ stats.inquiries }}</div>
+            <div class="stat-label">Total Inquiries</div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Inquiries -->
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title"><i class="bi bi-envelope text-primary"></i> Recent Inquiries</span>
+                <a href="{{ url_for('admin.inquiries_list') }}" class="btn btn-ghost btn-sm">View All</a>
+            </div>
+            {% if inquiries %}
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for inq in inquiries %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#8B5CF6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.8rem;font-weight:700;flex-shrink:0;">{{ inq.name[0].upper() }}</div>
+                            <span class="fw-600">{{ inq.name }}</span>
+                        </div>
+                    </td>
+                    <td class="text-muted">{{ inq.email }}</td>
+                    <td>
+                        {% if inq.inquiry_type == 'admission' %}
+                        <span class="badge-pill badge-info"><i class="bi bi-mortarboard"></i> Admission</span>
+                        {% else %}
+                        <span class="badge-pill badge-muted"><i class="bi bi-chat"></i> Contact</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-muted" style="font-size:.8rem;">{{ inq.created_at.strftime('%d %b %Y') }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <h5>No Inquiries Yet</h5>
+                <p>Contact and admission inquiries from the public site will appear here.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="col-lg-4">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title"><i class="bi bi-lightning-fill text-warning"></i> Quick Actions</span>
+            </div>
+            <div class="panel-body d-flex flex-column gap-2">
+                <a href="{{ url_for('admin.notice_create') }}" class="btn btn-accent w-100 d-flex align-items-center gap-2">
+                    <i class="bi bi-plus-circle"></i> Create New Notice
+                </a>
+                <a href="{{ url_for('admin.gallery_create') }}" class="btn btn-ghost w-100 d-flex align-items-center gap-2">
+                    <i class="bi bi-image-fill"></i> Add Gallery Image
+                </a>
+                <a href="{{ url_for('admin.notices_list') }}" class="btn btn-ghost w-100 d-flex align-items-center gap-2">
+                    <i class="bi bi-list-ul"></i> Manage Notices
+                </a>
+                <a href="{{ url_for('admin.inquiries_list') }}" class="btn btn-ghost w-100 d-flex align-items-center gap-2">
+                    <i class="bi bi-envelope-open"></i> View All Inquiries
+                </a>
+                <hr class="my-1">
+                <a href="{{ url_for('main.home') }}" target="_blank" class="btn btn-ghost w-100 d-flex align-items-center gap-2 text-muted">
+                    <i class="bi bi-box-arrow-up-right"></i> Open Public Website
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

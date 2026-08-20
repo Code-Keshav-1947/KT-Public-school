@@ -20,7 +20,7 @@
                             <img src="{{ url_for('static', filename=image.image_path) }}"
                                  class="card-img-top gallery-img"
                                  alt="{{ image.title }}"
-                                 loading="lazy">
+                                 loading="lazy" crossorigin="anonymous" >
                             <div class="card-body">
                                 <h5 class="card-title">{{ image.title }}</h5>
                                 {% if image.caption %}

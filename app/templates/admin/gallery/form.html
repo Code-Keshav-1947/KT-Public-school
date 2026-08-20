@@ -1,0 +1,125 @@
+﻿{% extends "admin/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block breadcrumb %} &rsaquo; <a href="{{ url_for('admin.gallery_list') }}">Gallery</a> &rsaquo; {{ title }}{% endblock %}
+{% block content %}
+<div class="page-hero">
+    <div>
+        <h1 class="page-hero-title">{{ title }}</h1>
+        <p class="page-hero-sub">Provide the image path and details below.</p>
+    </div>
+    <a href="{{ url_for('admin.gallery_list') }}" class="btn btn-ghost btn-sm d-flex align-items-center gap-2">
+        <i class="bi bi-arrow-left"></i> Back to Gallery
+    </a>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title"><i class="bi bi-image"></i> Image Details</span>
+            </div>
+            <div class="panel-body">
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="mb-4">
+                        {{ form.title.label(class="form-label") }}
+                        {{ form.title(class="form-control" + (" is-invalid" if form.title.errors else ""), placeholder="e.g. Annual Sports Day 2026") }}
+                        {% for e in form.title.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                    </div>
+                    <div class="mb-4">
+                        {{ form.image_path.label(class="form-label") }}
+                        {{ form.image_path(class="form-control" + (" is-invalid" if form.image_path.errors else ""), placeholder="img/gallery/filename.jpg", id="imagePathInput") }}
+                        {% for e in form.image_path.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+                        <div class="form-text">Path relative to the static folder. Example: <code>img/gallery/sports_day.jpg</code></div>
+                    </div>
+
+                    <!-- Live Preview -->
+                    <div class="mb-4">
+                        <label class="form-label">Image Preview</label>
+                        <div id="previewBox" style="width:100%;height:220px;border:2px dashed #E2E8F0;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#F8FAFC;transition:all .3s;">
+                            <div id="previewPlaceholder" style="text-align:center;color:#94A3B8;">
+                                <i class="bi bi-image" style="font-size:2.5rem;display:block;margin-bottom:.5rem;"></i>
+                                <span style="font-size:.8rem;">Enter a path above to preview</span>
+                            </div>
+                            <img id="previewImg" src="" alt="Preview" style="display:none;width:100%;height:100%;object-fit:cover;">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form.caption.label(class="form-label") }}
+                        {{ form.caption(class="form-control", placeholder="Optional: Short description of the image") }}
+                    </div>
+                    <div class="mb-4">
+                        <div class="form-check">
+                            {{ form.is_active(class="form-check-input") }}
+                            <label class="form-check-label fw-600" for="{{ form.is_active.id }}">{{ form.is_active.label.text }}</label>
+                            <div class="form-text">Uncheck to hide this image from the public gallery.</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        {{ form.submit(class="btn btn-accent px-4") }}
+                        <a href="{{ url_for('admin.gallery_list') }}" class="btn btn-ghost px-4">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="panel">
+            <div class="panel-header"><span class="panel-title"><i class="bi bi-folder2-open"></i> Image Files</span></div>
+            <div class="panel-body" style="font-size:.82rem;color:#64748B;">
+                <p class="mb-2">Place image files in:</p>
+                <code style="background:#F1F5F9;padding:.4rem .6rem;border-radius:6px;display:block;margin-bottom:1rem;font-size:.78rem;word-break:break-all;">app/static/img/gallery/</code>
+                <p class="mb-2">Then enter just the relative path, for example:</p>
+                <code style="background:#F1F5F9;padding:.4rem .6rem;border-radius:6px;display:block;margin-bottom:1rem;font-size:.78rem;">img/gallery/annual_day.jpg</code>
+                <p class="mb-0">Supported formats: JPG, PNG, SVG, WEBP</p>
+            </div>
+        </div>
+        {% if image %}
+        <div class="panel mt-3">
+            <div class="panel-header"><span class="panel-title"><i class="bi bi-clock-history"></i> Info</span></div>
+            <div class="panel-body" style="font-size:.84rem;color:#64748B;">
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Uploaded</span>
+                    <span class="text-dark fw-500">{{ image.uploaded_at.strftime('%d %b %Y') }}</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span>Image ID</span>
+                    <span class="badge-pill badge-muted">#{{ image.id }}</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+const pathInput = document.getElementById('imagePathInput');
+const previewImg = document.getElementById('previewImg');
+const previewPlaceholder = document.getElementById('previewPlaceholder');
+
+function updatePreview() {
+    const path = pathInput.value.trim();
+    if (path) {
+        previewImg.src = '/static/' + path;
+        previewImg.style.display = 'block';
+        previewPlaceholder.style.display = 'none';
+        previewImg.onerror = function() {
+            previewImg.style.display = 'none';
+            previewPlaceholder.style.display = 'block';
+            previewPlaceholder.innerHTML = '<i class="bi bi-exclamation-circle" style="font-size:2rem;display:block;margin-bottom:.5rem;color:#EF4444;"></i><span style="font-size:.8rem;color:#EF4444;">Image not found at this path</span>';
+        };
+    } else {
+        previewImg.style.display = 'none';
+        previewPlaceholder.style.display = 'block';
+        previewPlaceholder.innerHTML = '<i class="bi bi-image" style="font-size:2.5rem;display:block;margin-bottom:.5rem;"></i><span style="font-size:.8rem;">Enter a path above to preview</span>';
+    }
+}
+pathInput.addEventListener('input', updatePreview);
+// Trigger on load if editing
+if (pathInput.value) updatePreview();
+</script>
+{% endblock %}

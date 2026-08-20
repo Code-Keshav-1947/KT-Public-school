@@ -1,0 +1,108 @@
+﻿{% extends "admin/base.html" %}
+{% block title %}Notices{% endblock %}
+{% block page_title %}Notices{% endblock %}
+{% block breadcrumb %} &rsaquo; Notices{% endblock %}
+{% block content %}
+<div class="page-hero">
+    <div>
+        <h1 class="page-hero-title">Notices</h1>
+        <p class="page-hero-sub">{{ notices|length }} notice{{ 's' if notices|length != 1 else '' }} total</p>
+    </div>
+    <a href="{{ url_for('admin.notice_create') }}" class="btn btn-accent btn-sm d-flex align-items-center gap-2">
+        <i class="bi bi-plus-lg"></i> New Notice
+    </a>
+</div>
+
+<div class="panel">
+    {% if notices %}
+    <div class="table-responsive">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Published At</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for notice in notices %}
+        <tr>
+            <td class="text-muted" style="font-size:.8rem;">{{ notice.id }}</td>
+            <td>
+                <div class="fw-600" style="max-width:320px;">{{ notice.title }}</div>
+                <div class="text-muted" style="font-size:.78rem; margin-top:2px;">{{ notice.body[:80] }}{% if notice.body|length > 80 %}...{% endif %}</div>
+            </td>
+            <td>
+                {% if notice.is_published %}
+                <span class="badge-pill badge-success"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i> Published</span>
+                {% else %}
+                <span class="badge-pill badge-warning"><i class="bi bi-circle-fill" style="font-size:.45rem;"></i> Draft</span>
+                {% endif %}
+            </td>
+            <td class="text-muted" style="font-size:.82rem; white-space:nowrap;">{{ notice.published_at.strftime('%d %b %Y') }}</td>
+            <td class="text-muted" style="font-size:.82rem; white-space:nowrap;">{{ notice.created_at.strftime('%d %b %Y') }}</td>
+            <td>
+                <div class="d-flex align-items-center gap-1">
+                    <a href="{{ url_for('admin.notice_edit', notice_id=notice.id) }}" class="btn-icon btn-icon-edit" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <button type="button" class="btn-icon btn-icon-delete"
+                            onclick="confirmDelete('{{ url_for('admin.notice_delete', notice_id=notice.id) }}', '{{ notice.title | replace("'", "\\'") }}')"
+                            title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    <a href="{{ url_for('notices.notice_detail', notice_id=notice.id) }}" target="_blank" class="btn-icon" style="background:rgba(16,185,129,.1);color:#059669;" title="View on site">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="bi bi-megaphone"></i>
+        <h5>No Notices Yet</h5>
+        <p>Create your first notice to keep students and parents informed.</p>
+        <a href="{{ url_for('admin.notice_create') }}" class="btn btn-accent btn-sm mt-3">
+            <i class="bi bi-plus-lg me-1"></i> Create Notice
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+        <div class="modal-content" style="border:none;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,.2);">
+            <div class="modal-body p-4 text-center">
+                <div style="width:56px;height:56px;border-radius:14px;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#EF4444;margin:0 auto 1.25rem;">
+                    <i class="bi bi-trash"></i>
+                </div>
+                <h5 class="fw-bold mb-2">Delete Notice?</h5>
+                <p class="text-muted mb-4" id="deleteModalText" style="font-size:.875rem;">This action cannot be undone.</p>
+                <div class="d-flex gap-2 justify-content-center">
+                    <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST">
+                        <button type="submit" class="btn btn-danger" style="border-radius:8px;font-weight:600;">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+function confirmDelete(url, title) {
+    document.getElementById('deleteForm').action = url;
+    document.getElementById('deleteModalText').textContent = 'Are you sure you want to delete "' + title + '"? This cannot be undone.';
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+</script>
+{% endblock %}

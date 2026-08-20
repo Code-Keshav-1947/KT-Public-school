@@ -3,6 +3,7 @@ from flask import Flask
 from config import config
 from app.extensions import db, migrate, csrf
 from app.routes import main_bp, notices_bp, gallery_bp, contact_bp
+from app.routes.admin import admin_bp
 
 
 def create_app(config_name="default"):
@@ -17,10 +18,12 @@ def create_app(config_name="default"):
     app.register_blueprint(notices_bp)
     app.register_blueprint(gallery_bp)
     app.register_blueprint(contact_bp)
+    app.register_blueprint(admin_bp)
 
     @app.context_processor
     def inject_globals():
         from datetime import datetime
-        return {"current_year": datetime.now().year}
+        now = datetime.now()
+        return {"current_year": now.year, "now": now}
 
     return app
