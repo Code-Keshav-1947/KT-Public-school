@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, TextAreaField, BooleanField, DateTimeLocalField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, Length, Optional
 
@@ -23,10 +24,13 @@ class NoticeForm(FlaskForm):
 
 class GalleryForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired(), Length(max=200)])
-    image_path = StringField(
-        "Image Path",
-        validators=[DataRequired(), Length(max=500)],
-        description="Path under static/, e.g. img/gallery/sports_day.svg",
+
+    image_path = FileField(
+        "Select Image File",        
+        validators=[
+            Optional(),
+            FileAllowed(['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'], 'Only images are allowed!')
+        ]
     )
     caption = StringField("Caption", validators=[Optional(), Length(max=500)])
     is_active = BooleanField("Active", default=True)

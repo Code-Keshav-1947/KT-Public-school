@@ -1,3 +1,5 @@
+import cloudinary
+
 from flask import Flask
 
 from config import config
@@ -8,7 +10,20 @@ from app.routes.admin import admin_bp
 
 def create_app(config_name="default"):
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
+    app.config.from_object(config.get(config_name, config["default"]))
+
+    if app.config.get("CLOUDINARY_URL"):
+        cloudinary.config(
+            cloudinary_url=app.config.get("CLOUDINARY_URL"),
+            secure=True,
+        )
+    else:
+        cloudinary.config(
+            cloud_name=app.config.get("CLOUDINARY_CLOUD_NAME"),
+            api_key=app.config.get("CLOUDINARY_API_KEY"),
+            api_secret=app.config.get("CLOUDINARY_API_SECRET"),
+            secure=True,
+        )
 
     db.init_app(app)
     migrate.init_app(app, db)

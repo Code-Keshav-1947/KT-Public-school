@@ -1,4 +1,4 @@
-﻿{% extends "admin/base.html" %}
+{% extends "admin/base.html" %}
 {% block title %}Notices{% endblock %}
 {% block page_title %}Notices{% endblock %}
 {% block breadcrumb %} &rsaquo; Notices{% endblock %}
@@ -89,6 +89,7 @@
                 <div class="d-flex gap-2 justify-content-center">
                     <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cancel</button>
                     <form id="deleteForm" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <button type="submit" class="btn btn-danger" style="border-radius:8px;font-weight:600;">Delete</button>
                     </form>
                 </div>

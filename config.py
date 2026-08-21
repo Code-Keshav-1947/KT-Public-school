@@ -14,6 +14,10 @@ class Config:
     SQLALCHEMY_DATABASE_URI = db_url
     ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
     ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")
+    CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
+    CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME")
+    CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY")
+    CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET")
 
 
 class DevelopmentConfig(Config):

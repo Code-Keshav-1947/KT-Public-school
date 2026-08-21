@@ -17,8 +17,10 @@
             {% for image in images %}
             <div class="col-md-6 col-lg-4">
                 <div class="card gallery-card border-0 shadow-sm h-100">
-                    <img src="{{ image.image_path }}" class="card-img-top gallery-img" alt="{{ image.title }}"
-                        loading="lazy" crossorigin="anonymous">
+                    <img src="{% if image.image_path.startswith('http') %}{{ image.image_path }}{% else %}{{ url_for('static', filename=image.image_path) }}{% endif %}"
+                         class="card-img-top gallery-img"
+                         alt="{{ image.title }}"
+                         loading="lazy">
                     <div class="card-body">
                         <h5 class="card-title">{{ image.title }}</h5>
                         {% if image.caption %}
