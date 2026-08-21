@@ -4,6 +4,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Clean CLOUDINARY_URL if present to avoid Cloudinary SDK initialization crash
+_c_url = os.environ.get("CLOUDINARY_URL", "").strip().strip("\"'")
+if _c_url:
+    if not _c_url.startswith("cloudinary://"):
+        if "@" in _c_url and ":" in _c_url:
+            os.environ["CLOUDINARY_URL"] = f"cloudinary://{_c_url}"
+        else:
+            os.environ.pop("CLOUDINARY_URL", None)
+    else:
+        os.environ["CLOUDINARY_URL"] = _c_url
+
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")

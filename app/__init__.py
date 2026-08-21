@@ -1,3 +1,16 @@
+import os
+
+# Clean CLOUDINARY_URL if present to avoid Cloudinary SDK initialization crash
+cloudinary_url = os.environ.get("CLOUDINARY_URL", "").strip().strip("\"'")
+if cloudinary_url:
+    if not cloudinary_url.startswith("cloudinary://"):
+        if "@" in cloudinary_url and ":" in cloudinary_url:
+            os.environ["CLOUDINARY_URL"] = f"cloudinary://{cloudinary_url}"
+        else:
+            os.environ.pop("CLOUDINARY_URL", None)
+    else:
+        os.environ["CLOUDINARY_URL"] = cloudinary_url
+
 import cloudinary
 
 from flask import Flask
